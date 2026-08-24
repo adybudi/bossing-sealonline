@@ -33,9 +33,12 @@ jobs:
             php artisan optimize:clear
             php artisan optimize
 
-            # 3. Update daemon Node.js & Restart PM2
+            # 3. Load Node.js & Update daemon Node.js & Restart PM2
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd daemon
             npm install --production
-            npx pm2 restart seal-daemon || npx pm2 start bot-daemon.js --name "seal-daemon"
+            pm2 restart seal-daemon || pm2 start bot-daemon.js --name "seal-daemon" || npx pm2 start bot-daemon.js --name "seal-daemon"
+            pm2 save
 
             echo "🚀 Deployment Selesai dan Berhasil!"
