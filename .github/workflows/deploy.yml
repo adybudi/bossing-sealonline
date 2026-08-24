@@ -1,0 +1,41 @@
+name: Auto Deploy to Shared Hosting
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Hosting via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/seal-project
+            
+            # 1. Pull perubahan terbaru dari branch production
+            git checkout production
+            git pull origin production
+
+            # 2. Update dependency Laravel & Database
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan optimize:clear
+            php artisan optimize
+
+            # 3. Update daemon Node.js & Restart PM2
+            cd daemon
+            npm install --production
+            npx pm2 restart seal-daemon || npx pm2 start bot-daemon.js --name "seal-daemon"
+
+            echo "🚀 Deployment Selesai dan Berhasil!"
