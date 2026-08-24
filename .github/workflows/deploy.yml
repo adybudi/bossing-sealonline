@@ -28,7 +28,7 @@ jobs:
             git pull origin production
 
             # 2. Update dependency Laravel & Database
-            php ~/composer.phar install --no-dev --optimize-autoloader || composer install --no-dev --optimize-autoloader
+            php ~/composer.phar install --no-dev --optimize-autoloader --no-scripts || composer install --no-dev --optimize-autoloader --no-scripts
             php artisan migrate --force
             php artisan optimize:clear
             php artisan optimize
