@@ -1,0 +1,176 @@
+{
+  "Knight of All-Evil @ Dungeon Silon-Aleph": {
+    "bossName": "Knight of All-Evil",
+    "location": "Dungeon Silon-Aleph",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Knight of All-Evil": {
+    "bossName": "Knight of All-Evil",
+    "location": "Dungeon Silon-Aleph",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Death Knight Yami @ Clements Mine": {
+    "bossName": "Death Knight Yami",
+    "location": "Clements Mine",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Death Knight Yami": {
+    "bossName": "Death Knight Yami",
+    "location": "Clements Mine",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Titan Skull @ Clements Mine": {
+    "bossName": "Titan Skull",
+    "location": "Clements Mine",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Titan Skull": {
+    "bossName": "Titan Skull",
+    "location": "Clements Mine",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Ohm @ Cross Forest": {
+    "bossName": "Ohm",
+    "location": "Cross Forest",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Ohm": {
+    "bossName": "Ohm",
+    "location": "Cross Forest",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "[A] Knight of All-Evil @ Nerais": {
+    "bossName": "[A] Knight of All-Evil",
+    "location": "Nerais",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "[A] Knight of All-Evil": {
+    "bossName": "[A] Knight of All-Evil",
+    "location": "Nerais",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Jikael @ Blue Eye": {
+    "bossName": "Jikael",
+    "location": "Blue Eye",
+    "durationMinutes": 105,
+    "autoLearned": true
+  },
+  "Jikael": {
+    "bossName": "Jikael",
+    "location": "Blue Eye",
+    "durationMinutes": 105,
+    "autoLearned": true
+  },
+  "[BOSS] Hellfire @ Blue Eye": {
+    "bossName": "[BOSS] Hellfire",
+    "location": "Blue Eye",
+    "durationMinutes": 15,
+    "autoLearned": true
+  },
+  "[BOSS] Hellfire": {
+    "bossName": "[BOSS] Hellfire",
+    "location": "Blue Eye",
+    "durationMinutes": 15,
+    "autoLearned": true
+  },
+  "Titan Skull @ Dungeon Crude": {
+    "bossName": "Titan Skull",
+    "location": "Dungeon Crude",
+    "durationMinutes": 30,
+    "autoLearned": true
+  },
+  "Guardian of Pillar @ Northern Poibus": {
+    "bossName": "Guardian of Pillar",
+    "location": "Northern Poibus",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "Guardian of Pillar": {
+    "bossName": "Guardian of Pillar",
+    "location": "Northern Poibus",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "[Sly]First Pig @ Esdelron Lake": {
+    "bossName": "[Sly]First Pig",
+    "location": "Esdelron Lake",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "[Sly]First Pig": {
+    "bossName": "[Sly]First Pig",
+    "location": "Esdelron Lake",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "[Violent]Second Pig @ Esdelron Lake": {
+    "bossName": "[Violent]Second Pig",
+    "location": "Esdelron Lake",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "[Violent]Second Pig": {
+    "bossName": "[Violent]Second Pig",
+    "location": "Esdelron Lake",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "Unstable Ohm @ Blue Eye": {
+    "bossName": "Unstable Ohm",
+    "location": "Blue Eye",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "Unstable Ohm": {
+    "bossName": "Unstable Ohm",
+    "location": "Blue Eye",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "[Swift]Third Pig @ Esdelron Lake": {
+    "bossName": "[Swift]Third Pig",
+    "location": "Esdelron Lake",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "[Swift]Third Pig": {
+    "bossName": "[Swift]Third Pig",
+    "location": "Esdelron Lake",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "Tarantaros @ Blue Eye": {
+    "bossName": "Tarantaros",
+    "location": "Blue Eye",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "Tarantaros": {
+    "bossName": "Tarantaros",
+    "location": "Blue Eye",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "Lucifer @ Blue Eye": {
+    "bossName": "Lucifer",
+    "location": "Blue Eye",
+    "durationMinutes": 120,
+    "autoLearned": true
+  },
+  "Lucifer": {
+    "bossName": "Lucifer",
+    "location": "Blue Eye",
+    "durationMinutes": 120,
+    "autoLearned": true
+  }
+}

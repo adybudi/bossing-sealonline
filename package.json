@@ -1,0 +1,27 @@
+{
+  "name": "seal-online-multi-tracker",
+  "version": "2.0.0",
+  "description": "Seal Online Multi-Server Boss Tracker with Laravel 12 & Real-time Node Daemon",
+  "main": "daemon/bot-daemon.js",
+  "scripts": {
+    "start": "php artisan start",
+    "dev": "php artisan start",
+    "daemon": "node daemon/bot-daemon.js",
+    "laravel": "php artisan serve --port=8001"
+  },
+  "keywords": [
+    "seal-online",
+    "boss-tracker",
+    "laravel-12",
+    "discord-selfbot",
+    "websocket"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.19.0",
+    "discord.js-selfbot-v13": "^3.7.1",
+    "dotenv": "^16.4.7",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seal Online - Boss Respawn Countdown Timer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">⚔️</span>
+                <div>
+                    <h1>SEAL ONLINE BOSS TIMER</h1>
+                    <p class="subtitle">Pengingat Waktu Respawn Boss & Alarm Countdown</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div id="discordStatusBadge" class="badge-discord badge-discord-off" title="Status koneksi ke Discord Bot Listener">
+                    <span class="status-dot"></span>
+                    <span id="discordStatusText">Discord: Offline</span>
+                </div>
+                <button id="btnRescanDiscord" class="btn btn-outline-success btn-sm" title="Scan 100 riwayat chat Discord terbaru untuk screening waktu spawn">
+                    🔄 Scan Riwayat
+                </button>
+                <button id="btnOpenPasteModal" class="btn btn-outline-info btn-sm" title="Paste log chat dari Discord">
+                    📋 Paste Log Discord
+                </button>
+                <button id="btnSoundTest" class="btn btn-secondary btn-sm" title="Uji Coba Suara Alarm">
+                    🔊 Tes Alarm
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Form Input Card -->
+            <section class="card form-card">
+                <div class="card-header">
+                    <h2>📝 Tambah Data Boss</h2>
+                </div>
+                <form id="bossForm" class="boss-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="bossName">Nama Boss <span class="required">*</span></label>
+                            <input type="text" id="bossName" list="bossSuggestions" placeholder="Contoh: Queen Bee, Titan, dll." required autocomplete="off">
+                            <datalist id="bossSuggestions">
+                                <option value="Queen Bee">
+                                <option value="Titan">
+                                <option value="Mariel">
+                                <option value="Black Harpy">
+                                <option value="Wood Wood">
+                                <option value="Salamander">
+                                <option value="Dark Knight">
+                                <option value="Solar">
+                                <option value="Sphinx">
+                                <option value="Rayman">
+                                <option value="Bale">
+                            </datalist>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bossLocation">Lokasi / Map <span class="required">*</span></label>
+                            <input type="text" id="bossLocation" list="locationSuggestions" placeholder="Contoh: Silon Cave, Mt. Cross, dll." required autocomplete="off">
+                            <datalist id="locationSuggestions">
+                                <option value="Silon Cave">
+                                <option value="Mt. Cross">
+                                <option value="Cross Lake">
+                                <option value="Clement Mountain">
+                                <option value="Adel Monastery">
+                                <option value="Laywook Forest">
+                                <option value="End of Land">
+                                <option value="Esdelron Lake">
+                                <option value="Zaiden">
+                            </datalist>
+                        </div>
+
+                        <div class="form-group form-time-group">
+                            <label>Waktu Spawn / Interval <span class="required">*</span></label>
+                            <div class="time-inputs">
+                                <div class="time-input-col">
+                                    <input type="number" id="spawnHours" min="0" max="99" value="0" placeholder="00">
+                                    <span>Jam</span>
+                                </div>
+                                <span class="time-divider">:</span>
+                                <div class="time-input-col">
+                                    <input type="number" id="spawnMinutes" min="0" max="59" value="30" placeholder="00">
+                                    <span>Menit</span>
+                                </div>
+                                <span class="time-divider">:</span>
+                                <div class="time-input-col">
+                                    <input type="number" id="spawnSeconds" min="0" max="59" value="0" placeholder="00">
+                                    <span>Detik</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Preset Badges -->
+                    <div class="preset-wrapper">
+                        <span class="preset-label">Preset Cepat:</span>
+                        <div class="preset-buttons">
+                            <button type="button" class="btn-preset" data-h="0" data-m="30" data-s="0">30m</button>
+                            <button type="button" class="btn-preset" data-h="1" data-m="0" data-s="0">1 Jam</button>
+                            <button type="button" class="btn-preset" data-h="2" data-m="0" data-s="0">2 Jam</button>
+                            <button type="button" class="btn-preset" data-h="3" data-m="0" data-s="0">3 Jam</button>
+                            <button type="button" class="btn-preset" data-h="4" data-m="0" data-s="0">4 Jam</button>
+                            <button type="button" class="btn-preset" data-h="6" data-m="0" data-s="0">6 Jam</button>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn btn-primary" id="btnSubmit">
+                            ➕ Simpan Boss ke Daftar
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Boss List Section -->
+            <section class="boss-list-section">
+                <div class="list-header">
+                    <div class="list-title-wrap">
+                        <h2>🎯 Daftar Countdown Boss</h2>
+                        <span class="badge badge-count" id="bossCount">0 Boss</span>
+                        <div class="view-mode-toggle">
+                            <button type="button" id="btnViewCard" class="btn-toggle active" title="Tampilan Card">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                <span>Card</span>
+                            </button>
+                            <button type="button" id="btnViewList" class="btn-toggle" title="Tampilan List / Baris">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                                <span>List</span>
+                            </button>
+                        </div>
+                        <div class="sort-wrapper">
+                            <label for="sortSelect" class="sort-label">⚡ Urutkan:</label>
+                            <select id="sortSelect" class="sort-select">
+                                <option value="spawn_desc" selected>🚨 Spawn Teratas + Waktu Terbesar</option>
+                                <option value="spawn_asc">🚨 Spawn Teratas + Waktu Terkecil</option>
+                                <option value="name">🔤 Nama Boss (A-Z)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="list-controls" id="listControls" style="display: none;">
+                        <button id="btnStartAll" class="btn btn-outline-success btn-xs">▶ Mulai Semua</button>
+                        <button id="btnPauseAll" class="btn btn-outline-warning btn-xs">⏸ Berhenti Semua</button>
+                        <button id="btnResetAll" class="btn btn-outline-info btn-xs">🔄 Reset Semua</button>
+                        <button id="btnClearAll" class="btn btn-outline-danger btn-xs">🗑 Hapus Semua</button>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">🛡️</div>
+                    <p class="empty-title">Belum ada data boss</p>
+                    <p class="empty-desc">Silakan masukkan nama boss, lokasi, dan waktu spawn di formulir atas.</p>
+                </div>
+
+                <!-- Boss Cards Grid -->
+                <div id="bossList" class="boss-grid"></div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Seal Online Boss Timer &bull; Data tersimpan otomatis di browser (JSON / LocalStorage)</p>
+        </footer>
+    </div>
+
+    <!-- Alarm Modal / Alert Banner -->
+    <div id="alarmOverlay" class="alarm-overlay" style="display: none;">
+        <div class="alarm-box">
+            <div class="alarm-anim">🔔</div>
+            <h3 id="alarmBossName">BOSS MUNCUL!</h3>
+            <p id="alarmBossLocation">Lokasi: -</p>
+            <p class="alarm-time">Waktu respawn telah tiba! Segera check spot bossing!</p>
+            <button id="btnDismissAlarm" class="btn btn-primary">OK, Matikan Alarm</button>
+        </div>
+    </div>
+
+    <!-- Paste Discord Log Modal -->
+    <div id="pasteModal" class="alarm-overlay" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>📋 Paste Log Chat Discord</h3>
+                <button type="button" id="btnClosePasteModal" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">
+                    Salin (Copy) pesan dari channel Discord <code>#boss</code> lalu tempelkan di bawah. Sistem otomatis mendeteksi boss yang <b>muncul</b> atau <b>dikalahkan</b> beserta jamnya!
+                </p>
+                <textarea id="discordPasteInput" class="paste-textarea" rows="7" placeholder="Contoh:&#10;[Monster]::[Tarantaros] muncul di [Blue Eye]&#10;[22-08-2026 14:17:25]&#10;[Monster]::[Lucifer] dikalahkan oleh [Raelyn]&#10;[22-08-2026 14:31:53]"></textarea>
+                <div id="pasteFeedback" class="paste-feedback" style="display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCancelPaste" class="btn btn-secondary">Batal</button>
+                <button type="button" id="btnProcessPaste" class="btn btn-primary">🚀 Proses & Update Timer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
