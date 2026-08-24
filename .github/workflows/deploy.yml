@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ~/seal-project
+            cd ~/bossing-seal-online
             
             # 1. Pull perubahan terbaru dari branch production
             git checkout production
