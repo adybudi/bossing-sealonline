@@ -27,11 +27,16 @@ jobs:
             git checkout production
             git pull origin production
 
-            # 2. Hubungkan Subdomain ke folder public Laravel jika belum terhubung
+            # 2. Pastikan permission folder tepat (agar LiteSpeed Web Server bisa membaca)
+            chmod 755 ~/bossing-seal-online
+            chmod 755 ~/bossing-seal-online/public
+            chmod -R 775 ~/bossing-seal-online/storage ~/bossing-seal-online/bootstrap/cache
+
+            # 3. Hubungkan Subdomain ke folder public Laravel jika belum terhubung
             rm -rf ~/public_html/seal.adybudi.my.id
             ln -s ~/bossing-seal-online/public ~/public_html/seal.adybudi.my.id
 
-            # 3. Update dependency Laravel & Database
+            # 4. Update dependency Laravel & Database
             php ~/composer.phar install --no-dev --optimize-autoloader --no-scripts || composer install --no-dev --optimize-autoloader --no-scripts
             php artisan migrate --force
             php artisan db:seed --force
