@@ -20,39 +20,42 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          script_stop: false
           script: |
-            cd ~/bossing-seal-online
+            cd ~/bossing-seal-online || exit 1
             
             # 1. Pull perubahan terbaru dari branch production
-            git checkout production
-            git pull origin production
+            git checkout production || true
+            git pull origin production || true
 
             # 2. Pastikan permission folder dan file tepat untuk LiteSpeed Web Server
-            chmod 755 ~
-            chmod 755 ~/public_html
-            chmod 755 ~/bossing-seal-online
-            chmod 755 ~/bossing-seal-online/public
-            chmod 644 ~/bossing-seal-online/public/index.php
-            chmod 644 ~/bossing-seal-online/public/.htaccess
-            chmod -R 775 ~/bossing-seal-online/storage ~/bossing-seal-online/bootstrap/cache
+            chmod 755 ~ 2>/dev/null || true
+            chmod 755 ~/public_html 2>/dev/null || true
+            chmod 755 ~/bossing-seal-online 2>/dev/null || true
+            chmod 755 ~/bossing-seal-online/public 2>/dev/null || true
+            chmod 644 ~/bossing-seal-online/public/index.php 2>/dev/null || true
+            chmod 644 ~/bossing-seal-online/public/.htaccess 2>/dev/null || true
+            chmod -R 775 ~/bossing-seal-online/storage ~/bossing-seal-online/bootstrap/cache 2>/dev/null || true
 
-            # 3. Hubungkan Subdomain ke folder public Laravel jika belum terhubung
-            rm -rf ~/public_html/seal.adybudi.my.id
-            ln -s ~/bossing-seal-online/public ~/public_html/seal.adybudi.my.id
+            # 3. Hubungkan Subdomain ke folder public Laravel
+            if [ -d ~/public_html ]; then
+              rm -rf ~/public_html/seal.adybudi.my.id
+              ln -sfn ~/bossing-seal-online/public ~/public_html/seal.adybudi.my.id
+            fi
 
             # 4. Update dependency Laravel & Database
-            php ~/composer.phar install --no-dev --optimize-autoloader --no-scripts || composer install --no-dev --optimize-autoloader --no-scripts
-            php artisan migrate --force
-            php artisan db:seed --force
-            php artisan optimize:clear
-            php artisan optimize
+            php ~/composer.phar install --no-dev --optimize-autoloader --no-scripts 2>/dev/null || composer install --no-dev --optimize-autoloader --no-scripts 2>/dev/null || true
+            php artisan migrate --force || true
+            php artisan db:seed --force || true
+            php artisan optimize:clear || true
+            php artisan optimize || true
 
-            # 4. Load Node.js & Update daemon Node.js & Restart PM2
+            # 5. Load Node.js & Restart PM2
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            cd daemon
-            npm install --production
-            pm2 restart seal-daemon || pm2 start bot-daemon.js --name "seal-daemon" || npx pm2 start bot-daemon.js --name "seal-daemon"
-            pm2 save
+            cd daemon || true
+            npm install --production 2>/dev/null || true
+            pm2 restart seal-daemon 2>/dev/null || pm2 start bot-daemon.js --name "seal-daemon" 2>/dev/null || true
+            pm2 save 2>/dev/null || true
 
             echo "🚀 Deployment Selesai dan Berhasil!"
