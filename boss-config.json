@@ -14,7 +14,7 @@
   "Death Knight Yami @ Clements Mine": {
     "bossName": "Death Knight Yami",
     "location": "Clements Mine",
-    "durationMinutes": 30,
+    "durationMinutes": 60,
     "autoLearned": true
   },
   "Death Knight Yami": {
@@ -26,7 +26,7 @@
   "Titan Skull @ Clements Mine": {
     "bossName": "Titan Skull",
     "location": "Clements Mine",
-    "durationMinutes": 30,
+    "durationMinutes": 60,
     "autoLearned": true
   },
   "Titan Skull": {
@@ -86,7 +86,7 @@
   "Titan Skull @ Dungeon Crude": {
     "bossName": "Titan Skull",
     "location": "Dungeon Crude",
-    "durationMinutes": 60,
+    "durationMinutes": 30,
     "autoLearned": true
   },
   "Guardian of Pillar @ Northern Poibus": {
@@ -225,6 +225,18 @@
     "bossName": "[BOSS] Hellfire",
     "location": "Year 315",
     "durationMinutes": 15,
+    "autoLearned": true
+  },
+  "Guardian of Pillar @ Southern Poibus": {
+    "bossName": "Guardian of Pillar",
+    "location": "Southern Poibus",
+    "durationMinutes": 240,
+    "autoLearned": true
+  },
+  "[BOSS] Hellfire @ Underground Gravesite Level3": {
+    "bossName": "[BOSS] Hellfire",
+    "location": "Underground Gravesite Level3",
+    "durationMinutes": 20,
     "autoLearned": true
   }
 }
