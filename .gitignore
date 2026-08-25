@@ -24,3 +24,5 @@ Homestead.yaml
 Thumbs.db
 .gstack/
 auto_hosting.md
+*.zip
+memory/

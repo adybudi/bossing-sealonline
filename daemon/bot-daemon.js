@@ -11,17 +11,20 @@ const axios = require('axios');
 const { Client } = require('discord.js-selfbot-v13');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const WEBSOCKET_PORT = parseInt(process.env.WEBSOCKET_PORT || '3001', 10);
+const WEBSOCKET_PORT = parseInt(process.env.PORT || process.env.WEBSOCKET_PORT || '3001', 10);
 const LARAVEL_API_URL = process.env.LARAVEL_API_URL || 'http://127.0.0.1:8000';
 const INTERNAL_SECRET = process.env.DAEMON_INTERNAL_SECRET || 'seal_internal_secret_change_me_in_env';
 
 // Load baseline config from boss-config.json
 let baseBossConfig = {};
+let resolvedConfigPath = path.join(__dirname, 'boss-config.json');
+if (!fs.existsSync(resolvedConfigPath)) {
+    resolvedConfigPath = path.join(__dirname, '../boss-config.json');
+}
 try {
-    const configPath = path.join(__dirname, '../boss-config.json');
-    if (fs.existsSync(configPath)) {
-        baseBossConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-        console.log(`[Config] Berhasil memuat ${Object.keys(baseBossConfig).length} boss baseline dari boss-config.json`);
+    if (fs.existsSync(resolvedConfigPath)) {
+        baseBossConfig = JSON.parse(fs.readFileSync(resolvedConfigPath, 'utf8'));
+        console.log(`[Config] Berhasil memuat ${Object.keys(baseBossConfig).length} boss baseline dari ${resolvedConfigPath}`);
     }
 } catch (e) {
     console.error('[Config] Gagal memuat boss-config.json:', e.message);
@@ -29,8 +32,7 @@ try {
 
 function saveBaseBossConfig() {
     try {
-        const configPath = path.join(__dirname, '../boss-config.json');
-        fs.writeFileSync(configPath, JSON.stringify(baseBossConfig, null, 2), 'utf8');
+        fs.writeFileSync(resolvedConfigPath, JSON.stringify(baseBossConfig, null, 2), 'utf8');
     } catch (e) {}
 }
 
@@ -631,9 +633,9 @@ class MultiServerBotDaemon {
                 return;
             }
 
-            const reqUrl = req.url.split('?')[0];
+            const reqUrl = req.url.split('?')[0].replace(/\/$/, ''); // trim trailing slash
 
-            if (reqUrl === '/health') {
+            if (reqUrl === '' || reqUrl === '/health') {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({
                     status: 'OK',
@@ -656,7 +658,7 @@ class MultiServerBotDaemon {
                 try {
                     const data = body ? JSON.parse(body) : {};
 
-                    if (req.method === 'POST' && reqUrl === '/control-server') {
+                    if (req.method === 'POST' && (reqUrl === '/control-server' || reqUrl === '/control')) {
                         const { server_id, action } = data;
                         await this.handleServerControl(server_id, action);
                         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -810,8 +812,9 @@ class MultiServerBotDaemon {
 
     async handleServerControl(serverId, action) {
         let session = this.sessions.get(serverId);
+        const act = (action || '').toUpperCase();
 
-        if (action === 'START') {
+        if (act === 'START') {
             if (!session) {
                 const res = await axios.get(`${LARAVEL_API_URL}/api/internal/servers`, {
                     headers: { 'X-Internal-Secret': INTERNAL_SECRET }
@@ -823,14 +826,14 @@ class MultiServerBotDaemon {
                 }
             }
             if (session) await session.start();
-        } else if (action === 'STOP') {
+        } else if (act === 'STOP') {
             if (session) await session.stop();
-        } else if (action === 'RESTART') {
+        } else if (act === 'RESTART') {
             if (session) {
                 await session.stop();
                 await session.start();
             }
-        } else if (action === 'RESCAN') {
+        } else if (act === 'RESCAN') {
             if (session) await session.scanDiscordHistory();
         }
     }

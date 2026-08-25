@@ -14,7 +14,7 @@
   "Death Knight Yami @ Clements Mine": {
     "bossName": "Death Knight Yami",
     "location": "Clements Mine",
-    "durationMinutes": 60,
+    "durationMinutes": 30,
     "autoLearned": true
   },
   "Death Knight Yami": {
@@ -26,7 +26,7 @@
   "Titan Skull @ Clements Mine": {
     "bossName": "Titan Skull",
     "location": "Clements Mine",
-    "durationMinutes": 60,
+    "durationMinutes": 30,
     "autoLearned": true
   },
   "Titan Skull": {
@@ -62,7 +62,7 @@
   "Jikael @ Blue Eye": {
     "bossName": "Jikael",
     "location": "Blue Eye",
-    "durationMinutes": 134,
+    "durationMinutes": 300,
     "autoLearned": true
   },
   "Jikael": {
@@ -237,6 +237,18 @@
     "bossName": "[BOSS] Hellfire",
     "location": "Underground Gravesite Level3",
     "durationMinutes": 20,
+    "autoLearned": true
+  },
+  "[BOSS] Hellfire @ Town Elim": {
+    "bossName": "[BOSS] Hellfire",
+    "location": "Town Elim",
+    "durationMinutes": 15,
+    "autoLearned": true
+  },
+  "Guardian of Pillar @ Dungeon Esdelron": {
+    "bossName": "Guardian of Pillar",
+    "location": "Dungeon Esdelron",
+    "durationMinutes": 210,
     "autoLearned": true
   }
 }

@@ -2,9 +2,9 @@
   "name": "count-boss-seal",
   "version": "1.0.0",
   "description": "Seal Online Boss Countdown Timer with Real-Time Discord Listener",
-  "main": "server.js",
+  "main": "bot-daemon.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node bot-daemon.js"
   },
   "keywords": [
     "seal-online",
