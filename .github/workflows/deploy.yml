@@ -16,12 +16,16 @@ jobs:
       - name: Deploy to Hosting via SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          cat << 'EOF' > ~/.ssh/deploy_key
+          ${{ secrets.SSH_KEY }}
+          EOF
           chmod 600 ~/.ssh/deploy_key
-          ssh -T -i ~/.ssh/deploy_key \
+          
+          echo "Connecting to ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}..."
+          ssh -v -T -i ~/.ssh/deploy_key \
               -p ${{ secrets.SSH_PORT }} \
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -o ServerAliveInterval=60 \
+              -o ConnectTimeout=15 \
               ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ~/bossing-seal-online && git checkout production 2>/dev/null || true && git pull origin production && php artisan optimize:clear && php artisan optimize"
           echo "🚀 Deployment Selesai dan Berhasil!"
