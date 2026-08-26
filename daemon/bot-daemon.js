@@ -12,8 +12,12 @@ const { Client } = require('discord.js-selfbot-v13');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const WEBSOCKET_PORT = parseInt(process.env.PORT || process.env.WEBSOCKET_PORT || '3001', 10);
-const LARAVEL_API_URL = process.env.LARAVEL_API_URL || 'http://127.0.0.1:8000';
-const INTERNAL_SECRET = process.env.DAEMON_INTERNAL_SECRET || 'seal_internal_secret_change_me_in_env';
+const LARAVEL_API_URL = (process.env.LARAVEL_API_URL && !process.env.LARAVEL_API_URL.includes('127.0.0.1') && !process.env.LARAVEL_API_URL.includes('localhost'))
+    ? process.env.LARAVEL_API_URL
+    : (process.env.APP_URL && !process.env.APP_URL.includes('127.0.0.1') && !process.env.APP_URL.includes('localhost'))
+        ? process.env.APP_URL
+        : 'https://seal.adybudi.my.id';
+const INTERNAL_SECRET = process.env.DAEMON_INTERNAL_SECRET || 'seal_internal_secret_98a7b6c5d4e3f2a1b0c';
 
 // Load baseline config from boss-config.json
 let baseBossConfig = {};
