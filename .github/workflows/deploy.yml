@@ -26,6 +26,8 @@ jobs:
             git reset --hard origin/production
             git checkout production
             php artisan optimize:clear
-            php artisan optimize
+            php artisan config:clear
+            php artisan cache:clear
             mkdir -p daemon/tmp && touch daemon/tmp/restart.txt
+            touch ~/public_html/seal.adybudi.my.id/index.php 2>/dev/null || true
             echo "🚀 Deployment Selesai dan Berhasil!"
