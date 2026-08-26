@@ -13,7 +13,7 @@ class InternalApiSecretMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $expectedSecret = env('DAEMON_INTERNAL_SECRET', 'seal_internal_secret_change_me_in_env');
+        $expectedSecret = config('services.daemon.secret', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c');
         $providedSecret = $request->header('X-Internal-Secret');
 
         if (!$providedSecret || !hash_equals($expectedSecret, $providedSecret)) {

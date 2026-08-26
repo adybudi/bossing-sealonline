@@ -45,4 +45,10 @@ return [
         'secret_key' => env('TURNSTILE_SECRET_KEY', ''),
     ],
 
+    'daemon' => [
+        'url' => env('DAEMON_URL', 'http://127.0.0.1:3001'),
+        'port' => env('WEBSOCKET_PORT', 3001),
+        'secret' => env('DAEMON_INTERNAL_SECRET', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c'),
+    ],
+
 ];

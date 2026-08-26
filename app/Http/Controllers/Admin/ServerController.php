@@ -210,8 +210,8 @@ class ServerController extends Controller
         }
 
         // 3. Inform daemon
-        $daemonPort = env('WEBSOCKET_PORT', 3001);
-        $daemonSecret = env('DAEMON_INTERNAL_SECRET', 'seal_internal_secret_change_me_in_env');
+        $daemonPort = config('services.daemon.port', 3001);
+        $daemonSecret = config('services.daemon.secret', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c');
         try {
             Http::timeout(2)
                 ->withHeaders(['X-Internal-Secret' => $daemonSecret])
@@ -237,8 +237,8 @@ class ServerController extends Controller
             'duration_minutes' => 'nullable|integer|min:1|max:1440',
         ]);
 
-        $daemonPort = env('WEBSOCKET_PORT', 3001);
-        $daemonSecret = env('DAEMON_INTERNAL_SECRET', 'seal_internal_secret_change_me_in_env');
+        $daemonPort = config('services.daemon.port', 3001);
+        $daemonSecret = config('services.daemon.secret', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c');
         try {
             $res = Http::timeout(3)
                 ->withHeaders(['X-Internal-Secret' => $daemonSecret])
@@ -267,8 +267,8 @@ class ServerController extends Controller
             'text' => 'required|string',
         ]);
 
-        $daemonPort = env('WEBSOCKET_PORT', 3001);
-        $daemonSecret = env('DAEMON_INTERNAL_SECRET', 'seal_internal_secret_change_me_in_env');
+        $daemonPort = config('services.daemon.port', 3001);
+        $daemonSecret = config('services.daemon.secret', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c');
         try {
             $res = Http::timeout(5)
                 ->withHeaders(['X-Internal-Secret' => $daemonSecret])
@@ -294,8 +294,8 @@ class ServerController extends Controller
             'boss_key' => 'required|string',
         ]);
 
-        $daemonPort = env('WEBSOCKET_PORT', 3001);
-        $daemonSecret = env('DAEMON_INTERNAL_SECRET', 'seal_internal_secret_change_me_in_env');
+        $daemonPort = config('services.daemon.port', 3001);
+        $daemonSecret = config('services.daemon.secret', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c');
         try {
             Http::timeout(2)
                 ->withHeaders(['X-Internal-Secret' => $daemonSecret])
@@ -321,8 +321,8 @@ class ServerController extends Controller
             ->where('boss_key', $validated['boss_key'])
             ->delete();
 
-        $daemonPort = env('WEBSOCKET_PORT', 3001);
-        $daemonSecret = env('DAEMON_INTERNAL_SECRET', 'seal_internal_secret_change_me_in_env');
+        $daemonPort = config('services.daemon.port', 3001);
+        $daemonSecret = config('services.daemon.secret', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c');
         try {
             Http::timeout(2)
                 ->withHeaders(['X-Internal-Secret' => $daemonSecret])
