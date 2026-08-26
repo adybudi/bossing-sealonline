@@ -14,37 +14,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy to Hosting via SSH
-        run: |
-          mkdir -p ~/.ssh
-          
-          # Tulis private key
-          cat << 'EOF' > ~/.ssh/deploy_key
-          ${{ secrets.SSH_KEY }}
-          EOF
-          chmod 600 ~/.ssh/deploy_key
-
-          # Buka kunci dengan passphrase jika ada
-          if [ -n "${{ secrets.SSH_PASSPHRASE }}" ]; then
-            echo "Membuka enkripsi passphrase private key..."
-            ssh-keygen -p -P "${{ secrets.SSH_PASSPHRASE }}" -N "" -f ~/.ssh/deploy_key || true
-          fi
-          chmod 600 ~/.ssh/deploy_key
-
-          # Buat skrip deployment remote
-          cat << 'CMDEOF' > deploy_remote.sh
-          echo "✅ Berhasil login ke hosting!"
-          cd /home/${{ secrets.SSH_USER }}/bossing-seal-online || cd ~/bossing-seal-online
-          git checkout production 2>/dev/null || true
-          git pull origin production
-          php artisan optimize:clear
-          php artisan optimize
-          echo "🎉 Deployment Selesai dan Berhasil!"
-          CMDEOF
-
-          echo "🚀 Menghubungkan ke Server Hosting..."
-          ssh -i ~/.ssh/deploy_key \
-              -p ${{ secrets.SSH_PORT }} \
-              -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -o ConnectTimeout=30 \
-              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "bash -s" < deploy_remote.sh
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/bossing-seal-online
+            git checkout production
+            git pull origin production
+            php artisan optimize:clear
+            php artisan optimize
+            echo "🚀 Deployment Selesai dan Berhasil!"
