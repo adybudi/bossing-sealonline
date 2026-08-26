@@ -22,8 +22,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/bossing-seal-online
+            git fetch origin production
+            git reset --hard origin/production
             git checkout production
-            git pull origin production
             php artisan optimize:clear
             php artisan optimize
             mkdir -p daemon/tmp && touch daemon/tmp/restart.txt
