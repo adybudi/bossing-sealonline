@@ -26,4 +26,5 @@ jobs:
             git pull origin production
             php artisan optimize:clear
             php artisan optimize
+            mkdir -p daemon/tmp && touch daemon/tmp/restart.txt
             echo "🚀 Deployment Selesai dan Berhasil!"
