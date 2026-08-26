@@ -17,22 +17,21 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           
-          # Tulis encrypted/raw key
-          cat << 'EOF' > ~/.ssh/raw_key.pem
+          # Tulis private key
+          cat << 'EOF' > ~/.ssh/deploy_key
           ${{ secrets.SSH_KEY }}
           EOF
-          chmod 600 ~/.ssh/raw_key.pem
+          chmod 600 ~/.ssh/deploy_key
 
-          # Buka enkripsi passphrase jika ada (atau simpan langsung)
+          # Buka kunci dengan passphrase jika ada
           if [ -n "${{ secrets.SSH_PASSPHRASE }}" ]; then
-            echo "${{ secrets.SSH_PASSPHRASE }}" | openssl rsa -in ~/.ssh/raw_key.pem -passin stdin -out ~/.ssh/deploy_key 2>/dev/null || cp ~/.ssh/raw_key.pem ~/.ssh/deploy_key
-          else
-            cp ~/.ssh/raw_key.pem ~/.ssh/deploy_key
+            echo "Membuka enkripsi passphrase private key..."
+            ssh-keygen -p -P "${{ secrets.SSH_PASSPHRASE }}" -N "" -f ~/.ssh/deploy_key || true
           fi
           chmod 600 ~/.ssh/deploy_key
 
           echo "🚀 Menghubungkan ke Server Hosting..."
-          ssh -T -i ~/.ssh/deploy_key \
+          ssh -v -T -i ~/.ssh/deploy_key \
               -p ${{ secrets.SSH_PORT }} \
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
