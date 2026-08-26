@@ -31,11 +31,17 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
 
           echo "🚀 Menghubungkan ke Server Hosting..."
-          ssh -tt -i ~/.ssh/deploy_key \
+          ssh -i ~/.ssh/deploy_key \
               -p ${{ secrets.SSH_PORT }} \
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o ConnectTimeout=30 \
-              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "bash -l -c 'cd ~/bossing-seal-online && git checkout production 2>/dev/null || true && git pull origin production && php artisan optimize:clear && php artisan optimize'"
-
-          echo "🎉 Deployment Selesai dan Berhasil!"
+              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            echo "✅ Berhasil login ke hosting!"
+            cd /home/${{ secrets.SSH_USER }}/bossing-seal-online || cd ~/bossing-seal-online
+            git checkout production 2>/dev/null || true
+            git pull origin production
+            php artisan optimize:clear
+            php artisan optimize
+            echo "🎉 Deployment Selesai dan Berhasil!"
+EOF
