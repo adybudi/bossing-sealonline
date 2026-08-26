@@ -633,14 +633,14 @@ class MultiServerBotDaemon {
                 return;
             }
 
-            const reqUrl = req.url.split('?')[0].replace(/\/$/, ''); // trim trailing slash
-
-            if (reqUrl === '' || reqUrl === '/health') {
+            if (reqUrl === '' || reqUrl === '/health' || reqUrl === '/daemon' || reqUrl === '/daemon/health') {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({
                     status: 'OK',
+                    service: 'Seal Online Boss Tracker Daemon Engine V2.0',
                     activeServers: this.sessions.size,
-                    connectedClients: this.clientSockets.size
+                    connectedClients: this.clientSockets.size,
+                    uptimeSeconds: Math.floor(process.uptime())
                 }));
                 return;
             }
