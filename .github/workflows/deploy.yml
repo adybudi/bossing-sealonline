@@ -30,18 +30,21 @@ jobs:
           fi
           chmod 600 ~/.ssh/deploy_key
 
+          # Buat skrip deployment remote
+          cat << 'CMDEOF' > deploy_remote.sh
+          echo "✅ Berhasil login ke hosting!"
+          cd /home/${{ secrets.SSH_USER }}/bossing-seal-online || cd ~/bossing-seal-online
+          git checkout production 2>/dev/null || true
+          git pull origin production
+          php artisan optimize:clear
+          php artisan optimize
+          echo "🎉 Deployment Selesai dan Berhasil!"
+          CMDEOF
+
           echo "🚀 Menghubungkan ke Server Hosting..."
           ssh -i ~/.ssh/deploy_key \
               -p ${{ secrets.SSH_PORT }} \
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o ConnectTimeout=30 \
-              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            echo "✅ Berhasil login ke hosting!"
-            cd /home/${{ secrets.SSH_USER }}/bossing-seal-online || cd ~/bossing-seal-online
-            git checkout production 2>/dev/null || true
-            git pull origin production
-            php artisan optimize:clear
-            php artisan optimize
-            echo "🎉 Deployment Selesai dan Berhasil!"
-EOF
+              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "bash -s" < deploy_remote.sh
