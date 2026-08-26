@@ -14,18 +14,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy to Hosting via SSH
-        run: |
-          mkdir -p ~/.ssh
-          cat << 'EOF' > ~/.ssh/deploy_key
-          ${{ secrets.SSH_KEY }}
-          EOF
-          chmod 600 ~/.ssh/deploy_key
-          
-          echo "Connecting to ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}..."
-          ssh -v -T -i ~/.ssh/deploy_key \
-              -p ${{ secrets.SSH_PORT }} \
-              -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -o ConnectTimeout=15 \
-              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ~/bossing-seal-online && git checkout production 2>/dev/null || true && git pull origin production && php artisan optimize:clear && php artisan optimize"
-          echo "🚀 Deployment Selesai dan Berhasil!"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/bossing-seal-online
+            git checkout production
+            git pull origin production
+            php artisan optimize:clear
+            php artisan optimize
+            echo "🚀 Deployment Selesai dan Berhasil!"
