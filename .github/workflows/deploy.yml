@@ -18,16 +18,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh -i ~/.ssh/deploy_key \
+          ssh -T -i ~/.ssh/deploy_key \
               -p ${{ secrets.SSH_PORT }} \
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -o LogLevel=ERROR \
-              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ~/bossing-seal-online || exit 0
-            git checkout production 2>/dev/null || true
-            git pull origin production || true
-            php artisan optimize:clear 2>/dev/null || true
-            php artisan optimize 2>/dev/null || true
-            echo "🚀 Deployment Selesai dan Berhasil!"
-          EOF
+              -o ServerAliveInterval=60 \
+              ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ~/bossing-seal-online && git checkout production 2>/dev/null || true && git pull origin production && php artisan optimize:clear && php artisan optimize"
+          echo "🚀 Deployment Selesai dan Berhasil!"
