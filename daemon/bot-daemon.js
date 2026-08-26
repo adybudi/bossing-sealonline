@@ -637,7 +637,11 @@ class MultiServerBotDaemon {
                 return;
             }
 
-            if (reqUrl === '' || reqUrl === '/health' || reqUrl === '/daemon' || reqUrl === '/daemon/health') {
+            const rawUrl = req.url || '';
+            const reqUrl = rawUrl.split('?')[0].replace(/\/$/, '');
+
+            // All GET requests return healthy status JSON
+            if (req.method === 'GET' || reqUrl === '' || reqUrl === '/health' || reqUrl === '/daemon' || reqUrl === '/daemon/health') {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({
                     status: 'OK',
