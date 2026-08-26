@@ -11,6 +11,8 @@ class InternalApiSecretMiddleware
     /**
      * Handle an incoming request.
      */
+    public function handle(Request $request, Closure $next): Response
+    {
         $expectedSecret = config('services.daemon.secret', 'seal_internal_secret_98a7b6c5d4e3f2a1b0c');
         $providedSecret = $request->header('X-Internal-Secret');
 
