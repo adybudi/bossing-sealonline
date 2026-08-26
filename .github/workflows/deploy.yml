@@ -13,32 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Prepare SSH Key
-        id: prepare_key
-        run: |
-          mkdir -p ~/.ssh
-          cat << 'EOF' > ~/.ssh/temp_key
-          ${{ secrets.SSH_KEY }}
-          EOF
-          chmod 600 ~/.ssh/temp_key
-
-          if [ -n "${{ secrets.SSH_PASSPHRASE }}" ]; then
-            echo "Membuka enkripsi passphrase private key..."
-            ssh-keygen -p -P "${{ secrets.SSH_PASSPHRASE }}" -N "" -f ~/.ssh/temp_key || true
-          fi
-
-          EOF_DELIMITER=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-          echo "UNENCRYPTED_KEY<<$EOF_DELIMITER" >> "$GITHUB_OUTPUT"
-          cat ~/.ssh/temp_key >> "$GITHUB_OUTPUT"
-          echo "$EOF_DELIMITER" >> "$GITHUB_OUTPUT"
-          rm -f ~/.ssh/temp_key
-
       - name: Deploy to Hosting via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ steps.prepare_key.outputs.UNENCRYPTED_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/bossing-seal-online
