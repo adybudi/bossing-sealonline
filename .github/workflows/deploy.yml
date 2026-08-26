@@ -21,6 +21,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: ${{ secrets.SSH_PORT }}
+          request_pty: true
+          timeout: 60s
           script: |
             cd ~/bossing-seal-online
             git checkout production
